@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import LoginButton from "../app/components/LoginButton";
 import Link from "next/link";
 import React from "react";
+import { ThemeToggle } from "./components/theme-toggle";
 const FeatureCard = ({ 
   title, 
   description, 
@@ -34,6 +35,10 @@ export default function Home() {
   return (
     <div className="min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <nav className="flex justify-between items-center mb-20">
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+
+        
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -52,6 +57,7 @@ export default function Home() {
         ) : (
           <LoginButton />
         )}
+        </div>
       </nav>
 
       <main className="flex flex-col items-center text-center gap-8 max-w-4xl mx-auto">

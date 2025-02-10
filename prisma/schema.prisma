@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid()) // ID único del usuario
+  name            String?   // Nombre del usuario
+  email           String?   @unique // Email único
+  emailVerified   DateTime? // Fecha de verificación del email
+  image           String?   // URL de la imagen del perfil
+  stripeCustomerId String?  @unique // ID de cliente en Stripe
+  trialEndsAt     DateTime? // Fecha de finalización del trial
+  subscriptions   Subscription[] // Relación con las suscripciones
+  createdAt       DateTime  @default(now()) // Fecha de creación
+  updatedAt       DateTime  @updatedAt // Fecha de última actualización
+}
+
+model Subscription {
+  id              String    @id @default(uuid()) // ID único de la suscripción
+  userId          String    // ID del usuario relacionado
+  user            User      @relation(fields: [userId], references: [id]) // Relación con el usuario
+  stripeId        String    @unique // ID de la suscripción en Stripe
+  status          String    // Estado de la suscripción (active, trialing, canceled)
+  currentPeriodEnd DateTime // Fecha de finalización del período actual
+  createdAt       DateTime  @default(now()) // Fecha de creación
+  updatedAt       DateTime  @updatedAt // Fecha de última actualización
+}

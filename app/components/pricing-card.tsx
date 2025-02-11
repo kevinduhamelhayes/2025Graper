@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import React from "react";
 import { SubscriptionButton } from "@/components/subscription-button";
 
 export function PricingCard({ plan, index }: { plan: any; index: number }) {

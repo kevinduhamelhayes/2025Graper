@@ -1,75 +1,56 @@
 "use client";
-import { CheckIcon } from "lucide-react";
 import { motion } from "framer-motion";
-import { PricingCard } from "@/components/pricing-card";
-import { Button } from "@/components/ui/button";
+import { CheckIcon } from "lucide-react";
+import type { PricingPlan } from "@/types";
+import React from "react"
 
-const PLANS = [
-  {
-    name: "Starter",
-    price: "0",
-    features: [
-      "Acceso básico al dashboard",
-      "3 proyectos activos",
-      "Soporte por email",
-      "Prueba de 14 días",
-    ],
-    cta: "Comenzar prueba",
-  },
-  {
-    name: "Pro",
-    price: "29",
-    features: [
-      "Acceso completo al dashboard",
-      "Proyectos ilimitados",
-      "Soporte prioritario 24/7",
-      "Informes avanzados",
-      "Integraciones API",
-    ],
-    cta: "Elegir Pro",
-    featured: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Personalizado",
-    features: [
-      "Solución personalizada",
-      "Gestión dedicada",
-      "SLA 99.9%",
-      "Entrenamiento equipo",
-      "Seguridad premium",
-    ],
-    cta: "Contactar ventas",
-  },
-];
-
-export default function PricingPage() {
+export const PricingCard = ({ plan, index }: { plan: PricingPlan; index: number }) => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Planes para cada necesidad
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            Elige el plan que mejor se adapte a tus objetivos
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {PLANS.map((plan, index) => (
-            <PricingCard
-              key={plan.name}
-              plan={plan}
-              index={index}
-            />
-          ))}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.2 }}
+      className={`relative p-8 rounded-xl shadow-lg transition-all duration-300 ${
+        plan.featured
+          ? "bg-blue-600 text-white scale-105"
+          : "bg-white dark:bg-gray-800 hover:shadow-xl"
+      }`}
+    >
+      {plan.featured && (
+        <div className="absolute top-0 right-0 bg-yellow-400 text-gray-900 px-3 py-1 rounded-bl-xl text-sm font-bold">
+          Popular
         </div>
+      )}
+      
+      <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
+      
+      <div className="mb-6">
+        <span className="text-4xl font-bold">
+          {typeof plan.price === "number" ? `$${plan.price}` : plan.price}
+        </span>
+        {typeof plan.price === "number" && (
+          <span className="text-lg ml-2">/mes</span>
+        )}
       </div>
-    </div>
+
+      <ul className="space-y-3 mb-8">
+        {plan.features.map((feature) => (
+          <li key={feature} className="flex items-start">
+            <CheckIcon className="w-5 h-5 mt-1 mr-2 flex-shrink-0" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <button
+        className={`w-full py-3 rounded-lg font-medium transition-colors ${
+          plan.featured
+            ? "bg-white text-blue-600 hover:bg-gray-100"
+            : "bg-blue-600 text-white hover:bg-blue-700"
+        }`}
+      >
+        {plan.cta}
+      </button>
+    </motion.div>
   );
-}
+};
